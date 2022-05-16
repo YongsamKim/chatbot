@@ -1,0 +1,102 @@
+<!DOCTYPE html manifest="cache.manifest">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Blog Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="../../css/editor.css" rel="stylesheet"> -->
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <!--<link href="blog.css" rel="stylesheet">-->
+  </head>
+
+  <body onload="checkForUpdate()">
+<link href="bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<div class="chat_window"><div class="top_menu"><div class="buttons"><div class="button close"></div><div class="button minimize"></div><div class="button maximize"></div></div><div class="title"><audio src="https://ssacteam2.s3.us-west-1.amazonaws.com/romance/Beneath+the+Moonlight+-+Aaron+Kenny.mp3" controls="controls"></audio></div></div><ul class="messages"></ul><div class="bottom_wrapper clearfix"><div class="message_input_wrapper"><input class="message_input" placeholder="Type your message here..." /></div><div class="send_message"><div class="icon"></div><div class="text">Send</div></div></div></div><div class="message_template"><li class="message"><div class="avatar"></div><div class="text_wrapper"><div class="text"></div></div></li></div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!--<script src="../../js/vendor/popper.min.js"></script>-->
+    <!--<script src="bootstrap.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/holderjs@2.9.4/holder.js"></script>
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+      
+      (function () {
+    var Message;
+    Message = function (arg) {
+        this.text = arg.text, this.message_side = arg.message_side;
+        this.draw = function (_this) {
+            return function () {
+                var $message;
+                $message = $($('.message_template').clone().html());
+                $message.addClass(_this.message_side).find('.text').html(_this.text);
+                $('.messages').append($message);
+                return setTimeout(function () {
+                    return $message.addClass('appeared');
+                }, 0);
+            };
+        }(this);
+        return this;
+    };
+    $(function () {
+        var getMessageText, message_side, sendMessage;
+        message_side = 'right';
+        getMessageText = function () {
+            var $message_input;
+            $message_input = $('.message_input');
+            return $message_input.val();
+        };
+        sendMessage = function (text) {
+            var $messages, message;
+            if (text.trim() === '') {
+                return;
+            }
+            $('.message_input').val('');
+            $messages = $('.messages');
+            message_side = message_side === 'left' ? 'right' : 'left';
+            message = new Message({
+                text: text,
+                message_side: message_side
+            });
+            message.draw();
+            return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+        };
+        $('.send_message').click(function (e) {
+            return sendMessage(getMessageText());
+        });
+        $('.message_input').keyup(function (e) {
+            if (e.which === 13) {
+                return sendMessage(getMessageText());
+            }
+        });
+        sendMessage('Beneath the Moonlight - Aaron Kenny 을 들으시려면 Play  버튼을 눌러주세요.');
+        setTimeout(function () {
+            return sendMessage('Hi Sandy! How are you?');
+        }, 1000);
+        return setTimeout(function () {
+            return sendMessage('I\'m fine, thank you!');
+        }, 2000);
+    });
+}.call(this));
+    </script>
+  
+
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="13" style="font-weight:bold;font-size:13pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thumbnail</text></svg></body>
+</html>

@@ -1,21 +1,25 @@
-#from typing import Optional
+from typing import Optional, Any
+from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, Request
-#from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.logger import logger
+
+import chat_process
+callme = chat_process.emochatbot()
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 #app.mount("/", StaticFiles(directory="templates",html = True), name="templates")
 
-# 웹소켓 연결을 테스트 할 수 있는 웹페이지 (http://127.0.0.1:8000/client)
-@app.get("/client")
+# 웹소켓 연결을 테스트 할 수 있는 웹페이지 (http://52.52.135.8:8000/client)
+@app.get("/")
 async def client(request: Request):
     # /templates/client.html파일을 response함
-    return templates.TemplateResponse("client.html", {"request":request})
+    return templates.TemplateResponse("index.html", {"request":request})
 
 # 웹소켓 설정 ws://127.0.0.1:8000/ws 로 접속할 수 있음
 @app.websocket("/ws")
@@ -26,7 +30,10 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         data = await websocket.receive_text()  # client 메시지 수신대기
         print(f"message received : {data} from : {websocket.client}") 
-        await websocket.send_text(f"2조 AI Message server: '{data}' 에 대한 감성답변.") # client에 메시지 전달
+        answer, emoclass, music_list = callme.recommendation(data)
+        music_list = ['Pressure Cooker - Jeremy Korpas.mp3', 'Restless Natives - Doug Maxwell_Media Right Productions.mp3', 'Phantom - Density & Time.mp3', 'Stomp - Silent Partner.mp3', "Reuben's Train - Nat Keefe with The Bow Ties.mp3"]
+        await websocket.send_text(f"'{answer}' 그리고 '{emoclass}' 드리는 음악은 '{music_list}' ") # client에 메시지 전달
+        #await websocket.send_text(f"'{music_list}' 드립니다.")
 
 # 개발/디버깅용으로 사용할 앱 구동 함수
 def run():
